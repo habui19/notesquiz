@@ -6,14 +6,16 @@ from flask_login import login_user, current_user, logout_user, login_required
 from notesquiz.genq import generate
 
 @app.route("/")
-@app.route("/home")
-def home():
-    notes = Note.query.filter_by(author=current_user)
-    return render_template('home.html', notes=notes)
-
 @app.route("/about")
 def about():
     return render_template('about.html', title='About')
+
+@app.route("/home")
+def home():
+    if current_user.is_authenticated:
+        notes = Note.query.filter_by(author=current_user)
+        return render_template('home.html', notes=notes)
+    return redirect(url_for('about'))
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
