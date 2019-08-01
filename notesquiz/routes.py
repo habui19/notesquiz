@@ -6,16 +6,17 @@ from flask_login import login_user, current_user, logout_user, login_required
 from notesquiz.genq import generate
 
 @app.route("/")
-@app.route("/about")
-def about():
-    return render_template('about.html', title='About')
-
 @app.route("/home")
 def home():
+    return render_template('home.html', title='Home')
+
+@app.route("/notes")
+def notes():
     if current_user.is_authenticated:
         notes = Note.query.filter_by(author=current_user)
-        return render_template('home.html', notes=notes)
-    return redirect(url_for('about'))
+    else:
+        notes = None
+    return render_template('notes.html', notes=notes)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -62,7 +63,7 @@ def new_note():
         db.session.add(note)
         db.session.commit()
         flash(f'Note created!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('notes'))
     return render_template('create_note.html', title='New Note', form=form, legend='New Note')
 
 @app.route("/note/<int:note_id>")
@@ -99,7 +100,7 @@ def delete_note(note_id):
     db.session.delete(note)
     db.session.commit()
     flash('Note deleted', 'success')
-    return redirect(url_for('home'))
+    return redirect(url_for('notes'))
 
 @app.route("/note/<int:note_id>/questions", methods=["GET", "POST"])
 @login_required

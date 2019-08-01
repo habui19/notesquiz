@@ -23,5 +23,5 @@ class LoginForm(FlaskForm):
 
 class NoteForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
+    content = TextAreaField('Content', render_kw={"rows": 10}, validators=[DataRequired()])
     submit = SubmitField('Create')

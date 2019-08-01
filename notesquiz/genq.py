@@ -10,8 +10,9 @@ def generate(text):
         pos = dict(sentence.tags)
         # print(pos)
         keys = list(pos.keys())
+        # print(' '.join(key for key in keys))
         values = list(pos.values())
-
+        # print(' '.join(value for value in values))
         """ Questions for 3rd person singular present verbs """
         if 'VBZ' in values:
             idx = values.index('VBZ')
@@ -108,6 +109,6 @@ def generate(text):
     return questions
 
 if __name__ == "__main__":
-    with open("test2.txt") as f:
+    with open("test.txt") as f:
         text = f.read()
         print(generate(text))
